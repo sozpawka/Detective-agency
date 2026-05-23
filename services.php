@@ -37,6 +37,12 @@ if ($role === 'worker') {
 <?php if ($result->num_rows == 0): ?>
     <p style="color: #AEAEAE">Пока нет заказанных услуг.</p>
 <?php else: ?>
+    <?php
+    $totalSum = 0;
+    $paidSum = 0;
+    $unpaidSum = 0;
+    ?>
+
     <table>
         <tr>
             <th>Клиент</th>
@@ -46,6 +52,15 @@ if ($role === 'worker') {
             <th>Статус оплаты</th>
         </tr>
         <?php while($row = $result->fetch_assoc()): ?>
+            <?php
+            $cost = (float)$row['serviceCost'];
+            $totalSum += $cost;
+            if ($row['paid'] === 'Yes') {
+                $paidSum += $cost;
+            } else {
+                $unpaidSum += $cost;
+            }
+            ?>
             <tr>
                 <td><?php echo htmlspecialchars($row['fullName']); ?></td>
                 <td><?php echo htmlspecialchars($row['serviceDescription']); ?></td>
@@ -55,6 +70,17 @@ if ($role === 'worker') {
             </tr>
         <?php endwhile; ?>
     </table>
+    <div class="services-summary">
+        <div class="summary-item">
+            Общая сумма: <span><?php echo htmlspecialchars($totalSum); ?> руб.</span>
+        </div>
+        <div class="summary-item">
+            Оплачено: <span><?php echo htmlspecialchars($paidSum); ?> руб.</span>
+        </div>
+        <div class="summary-item">
+            Не оплачено: <span><?php echo htmlspecialchars($unpaidSum); ?> руб.</span>
+        </div>
+    </div>
 <?php endif; ?>
 
 <?php include 'footer.php'; ?>
