@@ -11,13 +11,14 @@ $clientsResult = $connection->query("SELECT id, fullName FROM clients");
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $clientId = $_POST['clientId'];
-    $serviceDescription = $_POST['serviceDescription'];
+    $description = $_POST['description'];
     $serviceDate = $_POST['serviceDate'];
     $serviceCost = $_POST['serviceCost'];
     $paid = $_POST['paid'];
-    $stmt = $connection->prepare("INSERT INTO services (clientId, serviceDescription, serviceDate, serviceCost, paid) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("issds", $clientId, $serviceDescription, $serviceDate, $serviceCost, $paid);
+    $stmt = $connection->prepare("INSERT INTO services (clientId, description, serviceDate, serviceCost, paid) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("issds", $clientId, $description, $serviceDate, $serviceCost, $paid);
     $stmt->execute();
+
     header("Location: services.php");
     exit;
 }
@@ -39,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </select>
     </p>
     <p>
-        Описание услуги <textarea name="serviceDescription" required></textarea>
+        Описание услуги <textarea name="description" required></textarea>
     </p>
     <p>
         Дата <input type="date" name="serviceDate" required>

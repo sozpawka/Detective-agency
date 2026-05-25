@@ -11,12 +11,12 @@ $userId = $_SESSION['user_id'];
 $role = $_SESSION['role'];
 
 if ($role === 'worker') {
-    $sql = "SELECT services.id, clients.fullName, services.serviceDescription, services.serviceDate, services.serviceCost, services.paid 
+    $sql = "SELECT services.id, clients.fullName, services.description, services.serviceDate, services.serviceCost, services.paid 
             FROM services 
             JOIN clients ON services.clientId = clients.id";
     $result = $connection->query($sql);
 } else {
-    $stmt = $connection->prepare("SELECT services.id, clients.fullName, services.serviceDescription, services.serviceDate, services.serviceCost, services.paid 
+    $stmt = $connection->prepare("SELECT services.id, clients.fullName, services.description, services.serviceDate, services.serviceCost, services.paid 
             FROM services 
             JOIN clients ON services.clientId = clients.id 
             WHERE clients.user_id = ?");
@@ -63,7 +63,7 @@ if ($role === 'worker') {
             ?>
             <tr>
                 <td><?php echo htmlspecialchars($row['fullName']); ?></td>
-                <td><?php echo htmlspecialchars($row['serviceDescription']); ?></td>
+                <td><?php echo htmlspecialchars($row['description']); ?></td>
                 <td><?php echo htmlspecialchars($row['serviceDate']); ?></td>
                 <td><?php echo htmlspecialchars($row['serviceCost']); ?> руб.</td>
                 <td><?php echo $row['paid'] === 'Yes' ? 'Оплачено' : 'Не оплачено'; ?></td>
